@@ -1,0 +1,26 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type slackSendRequest {
+    ChatID string `json:"chatId"`
+    Message string `json:"message"`
+}
+
+type slackSendResponse {
+    msg string `json:"msg"`
+}
+
+@server(
+    group: notify
+)
+service notify {
+    @handler slackSendHandler
+    post /slack/send (slackSendRequest) returns (slackSendResponse)
+}

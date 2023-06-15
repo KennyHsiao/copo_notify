@@ -1,0 +1,35 @@
+kind: pipeline
+name: copo_notify
+
+clone:
+  disable: true
+
+steps:
+  - name: docker
+    image: appleboy/drone-ssh
+    settings:
+      host:
+        from_secret: host
+      username:
+        from_secret: user
+      password:
+        from_secret: pwd
+      port:
+        from_secret: port
+      script:
+        - cd /root/copo_notify
+        - git checkout -- .
+        - git checkout stage
+        - git pull origin stage
+        - go mod tidy
+        - docker-compose down
+        - docker rmi $(docker images --filter="reference=notify_api" --quiet)
+        - docker rmi -f $(docker images -qf "dangling=true")
+        - CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -ldflags="-s -w" -o bin/notify notify/notify.go
+        - docker build -t notify_api -f notify/Dockerfile .
+        - docker-compose up -d
+    when:
+      branch:
+        - stage
+      event:
+        - push

@@ -1,0 +1,41 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type lineSendRequest {
+    ChatID string  `json:"chatId, optional"`
+    Message string `json:"message"`
+}
+
+type lineSendResponse {
+    msg string `json:"msg"`
+}
+
+type lineCallbackRequest {
+    ChatID string `json:"chatId"`
+    Message string `json:"message"`
+}
+
+type lineCallbackResponse {
+    msg string `json:"msg"`
+}
+
+@server(
+    group: notify
+)
+service notify {
+    @handler lineSendHandler
+    post /line/send (lineSendRequest) returns (lineSendResponse)
+
+    @handler lineAuthHandler
+    get /line/auth
+
+    @handler lineCallbackHandler
+    post /line/callback
+}

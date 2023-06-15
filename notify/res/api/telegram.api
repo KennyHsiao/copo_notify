@@ -1,0 +1,33 @@
+syntax = "v1"
+
+info(
+    title: "type title here"
+    desc: "type desc here"
+    author: "type author here"
+    email: "type email here"
+    version: "type version here"
+)
+
+type telegramSendRequest {
+    ChatID string `json:"chatId"`
+    Message string `json:"message"`
+}
+
+type telegramSendResponse {
+    msg string `json:"msg"`
+}
+
+type telegramNotifyRequest {
+    Message string `json:"message"`
+}
+
+@server(
+    group: notify
+)
+service notify {
+    @handler telegramSendHandler
+    post /telegram/send (telegramSendRequest) returns (telegramSendResponse)
+
+    @handler telegramNotifyHandler
+    post /telegram/notify (telegramNotifyRequest)
+}

@@ -1,0 +1,1 @@
+[error]: 2022-01-12 13:48:12 - failed to initialize database, got error [dial tcp 154.222.0.115:3306: connect: operation timed out] File:/Users/yangxuanming/go/pkg/mod/github.com/gioco-play/go-driver@v0.0.0-20211222092117-0d81e75ae35d/logrusz/gorm.go

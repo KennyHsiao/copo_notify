@@ -1,0 +1,11 @@
+version: "2"
+services:
+  api:
+    container_name: notify_api
+    image: notify_api
+    volumes:
+      - /root/logs/merchant_service:/app/logs
+    restart: always
+    network_mode: "host"
+    #ports:
+    #  - 20003:20003
